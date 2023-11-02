@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
+import { IssueTypeService } from './service';
 
 @Controller('issue-type')
 export class IssueTypeController {
-  // crud issue type
+  constructor(private readonly issueTypeService: IssueTypeService) {}
 }

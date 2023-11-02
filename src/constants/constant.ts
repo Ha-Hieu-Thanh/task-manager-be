@@ -39,8 +39,8 @@ export enum RoleType {
 }
 
 export enum IssueStateType {
-  OPEN = 'OPEN',
-  CLOSED = 'CLOSED',
+  OPEN = 0,
+  CLOSED = 999,
 }
 
 export enum ProjectStatus {
