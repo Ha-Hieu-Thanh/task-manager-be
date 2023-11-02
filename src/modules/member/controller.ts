@@ -25,6 +25,7 @@ import {
 } from './dto';
 import { GetMembersQuerySchema, VerifyCodeSchema } from './validation';
 import { MemberService } from './service';
+import { User } from '@shared/decorators/user.decorator';
 
 // check pm
 @Controller('member')
@@ -83,5 +84,11 @@ export class MemberController {
     query: GetMembersQueryDto,
   ) {
     return await this.memberService.getMembersInSystem(query);
+  }
+
+  @MemberPermission()
+  @Delete()
+  async leaveProject(@Request() req: any, @User('userId') userId: number) {
+    return await this.memberService.removeMember(userId, req.headers.projectId);
   }
 }
