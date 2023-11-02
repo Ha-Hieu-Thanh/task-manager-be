@@ -1,5 +1,10 @@
 import { JTDDataType } from 'ajv/dist/core';
-import { GetMembersQueryDto, InviteMembersDto, UpdateMembersDto } from './dto';
+import {
+  GetMembersQueryDto,
+  InviteMembersDto,
+  UpdateMembersDto,
+  VerifyCodeDto,
+} from './dto';
 
 export const InviteMembersSchema: JTDDataType<InviteMembersDto> = {
   type: 'object',
@@ -11,9 +16,8 @@ export const InviteMembersSchema: JTDDataType<InviteMembersDto> = {
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['projectId', 'email', 'role'],
+        required: ['email', 'role'],
         properties: {
-          projectId: { type: 'integer' },
           email: { type: 'string' },
           role: { type: 'string' },
         },
@@ -33,9 +37,8 @@ export const UpdateMembersSchema: JTDDataType<UpdateMembersDto> = {
       items: {
         type: 'object',
         additionalProperties: false,
-        required: ['projectId', 'memberId', 'role'],
+        required: ['memberId', 'role'],
         properties: {
-          projectId: { type: 'integer' },
           memberId: { type: 'integer' },
           role: { type: 'string' },
         },
@@ -50,12 +53,20 @@ export const GetMembersQuerySchema: JTDDataType<GetMembersQueryDto> = {
   additionalProperties: false,
   required: [],
   properties: {
-    projectId: { type: 'integer' },
     memberId: { type: 'integer' },
     email: { type: 'string' },
     name: { type: 'string' },
     role: { type: 'string' },
     page: { type: 'string' },
     limit: { type: 'string' },
+  },
+};
+
+export const VerifyCodeSchema: JTDDataType<VerifyCodeDto> = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['code'],
+  properties: {
+    code: { type: 'string' },
   },
 };

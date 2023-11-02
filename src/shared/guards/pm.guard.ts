@@ -1,4 +1,4 @@
-import { MySQLTableName, RoleType } from '@constants/constant';
+import { MySQLTableName, RoleType, UserType } from '@constants/constant';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { Observable } from 'rxjs';
@@ -14,8 +14,10 @@ export class ProjectManagerGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id;
+    const user = request.user;
+    const userId = user.userId;
     const projectId = request.headers['project-id'];
+    if (user.role === UserType.ADMIN) return true;
 
     if (userId && projectId) {
       const project = this.entityManager
