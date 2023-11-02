@@ -38,3 +38,14 @@ export const UpdateIssueStateOrdersSchema: JTDDataType<UpdateIssueStateOrdersDto
       },
     },
   };
+
+export const CraeteIssueStateSchema: JTDDataType<UpdateIssueStateDto> = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['name', 'key'],
+  properties: {
+    name: { type: 'string' },
+    key: { type: 'string' },
+    description: { type: 'string' },
+  },
+};

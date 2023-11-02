@@ -14,10 +14,17 @@ import { AJVValidationPipe } from '@shared/pipes/AJVValidationPipe';
 import { UpdateAccountSchema } from '@modules/account/validation';
 import { UpdateAccountDto } from '@modules/account/dto';
 import {
+  CraeteIssueStateSchema,
   UpdateIssueStateOrderSchema,
   UpdateIssueStateOrdersSchema,
+  UpdateIssueStateSchema,
 } from './validation';
-import { UpdateIssueStateOrderDto, UpdateIssueStateOrdersDto } from './dto';
+import {
+  CreateIssueStateDto,
+  UpdateIssueStateDto,
+  UpdateIssueStateOrderDto,
+  UpdateIssueStateOrdersDto,
+} from './dto';
 
 @Controller('issue-state')
 export class IssueStateController {
@@ -57,7 +64,8 @@ export class IssueStateController {
   async updateIssueState(
     @Request() req: any,
     @Param('issueStateId') issueStateId: number,
-    @Body(new AJVValidationPipe(UpdateAccountSchema)) data: UpdateAccountDto,
+    @Body(new AJVValidationPipe(UpdateIssueStateSchema))
+    data: UpdateIssueStateDto,
   ) {
     return await this.issueStateService.updateIssueState(
       req.headers.projectId,
@@ -74,6 +82,19 @@ export class IssueStateController {
     data: UpdateIssueStateOrdersDto,
   ) {
     return await this.issueStateService.updateIssueStateOrder(
+      req.headers.projectId,
+      data,
+    );
+  }
+
+  @MemberPermission()
+  @Post()
+  async createIssueState(
+    @Request() req: any,
+    @Body(new AJVValidationPipe(CraeteIssueStateSchema))
+    data: CreateIssueStateDto,
+  ) {
+    return await this.issueStateService.createIssueState(
       req.headers.projectId,
       data,
     );

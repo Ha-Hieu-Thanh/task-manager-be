@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { IssueState } from '@shared/models/issue-state.entity';
 import { EntityManager } from 'typeorm';
-import { UpdateIssueStateOrderDto, UpdateIssueStateOrdersDto } from './dto';
+import {
+  CreateIssueStateDto,
+  UpdateIssueStateDto,
+  UpdateIssueStateOrderDto,
+  UpdateIssueStateOrdersDto,
+} from './dto';
 
 @Injectable()
 export class IssueStateService {
@@ -46,7 +51,11 @@ export class IssueStateService {
     return issueState;
   }
 
-  async updateIssueState(projectId: number, issueStateId: number, data: any) {
+  async updateIssueState(
+    projectId: number,
+    issueStateId: number,
+    data: UpdateIssueStateDto,
+  ) {
     const issueState = await this.entityManager
       .getRepository(IssueState)
       .findOne({
@@ -87,5 +96,33 @@ export class IssueStateService {
       });
     }
     return true;
+  }
+
+  async createIssueState(projectId: number, data: CreateIssueStateDto) {
+    const { key } = data;
+    const issueState = await this.entityManager
+      .getRepository(IssueState)
+      .findOne({
+        where: { key, projectId },
+      });
+    if (issueState) {
+      throw new Error('Issue state already exists');
+    }
+
+    // get number of state
+    const order =
+      (await this.entityManager.getRepository(IssueState).count({
+        where: { projectId },
+      })) + 1;
+
+    const newIssueState = await this.entityManager
+      .getRepository(IssueState)
+      .create({
+        ...data,
+        order,
+        projectId,
+      });
+    await this.entityManager.getRepository(IssueState).save(newIssueState);
+    return newIssueState;
   }
 }

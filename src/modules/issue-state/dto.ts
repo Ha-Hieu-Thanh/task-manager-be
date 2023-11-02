@@ -12,3 +12,9 @@ export class UpdateIssueStateOrderDto {
 export class UpdateIssueStateOrdersDto {
   orders: UpdateIssueStateOrderDto[];
 }
+
+export class CreateIssueStateDto {
+  name: string;
+  key: string;
+  description?: string;
+}
