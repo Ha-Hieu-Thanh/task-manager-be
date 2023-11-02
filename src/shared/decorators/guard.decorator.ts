@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
 
-import { EGuardDecoratorKey, UserType } from '@constants/constant';
+import { EGuardDecoratorKey, RoleType, UserType } from '@constants/constant';
 
 export const Roles = (...roles: UserType[]) =>
   SetMetadata(EGuardDecoratorKey.ROLES, roles);

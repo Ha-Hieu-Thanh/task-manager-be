@@ -5,6 +5,8 @@ import { RolesGuard } from '@shared/guards/roles.guard';
 
 import { Roles } from './guard.decorator';
 import { EGuardDecoratorKey, UserType } from '@constants/constant';
+import { ProjectMemberGuard } from '@shared/guards/project.guard';
+import { ProjectManagerGuard } from '@shared/guards/pm.guard';
 
 export const Public = () => SetMetadata(EGuardDecoratorKey.PUBLIC, true);
 
@@ -12,10 +14,10 @@ export const UserPermission = () =>
   applyDecorators(UseGuards(AccessTokenGuard));
 
 export const MemberPermission = () =>
-  applyDecorators(
-    Roles(UserType.MEMBER),
-    UseGuards(AccessTokenGuard, RolesGuard),
-  );
+  applyDecorators(UseGuards(AccessTokenGuard, ProjectMemberGuard));
+
+export const ManagerPermission = () =>
+  applyDecorators(UseGuards(AccessTokenGuard, ProjectManagerGuard));
 
 export const AdminPermission = () =>
   applyDecorators(
